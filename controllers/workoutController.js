@@ -76,9 +76,66 @@ function listUsers(req, res) {
   });
 }
 
+function listExercises(req, res) {
+  const sql =
+    "SELECT id, nome, descrizione, gruppo_muscolare, attrezzatura, difficolta, video_dimostrativo, note FROM exercise";
+
+  connection.query(sql, (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: err.message });
+    }
+
+    res.json({
+      status: "OK",
+      exercises: results,
+    });
+  });
+}
+
+function storeExercise(req, res) {
+  const {
+    nome,
+    descrizione,
+    gruppo_muscolare,
+    attrezzatura,
+    difficolta,
+    video_dimostrativo,
+    commenti,
+  } = req.body;
+
+  const sql = `
+    INSERT INTO exercise (nome, descrizione, gruppo_muscolare, attrezzatura, difficolta, video_dimostrativo, commenti)
+    VALUES (?, ?, ?, ?, ?, ?, ?)
+  `;
+  const params = [
+    nome,
+    descrizione,
+    gruppo_muscolare,
+    attrezzatura,
+    difficolta,
+    video_dimostrativo,
+    commenti,
+  ];
+
+  connection.query(sql, params, (err, result) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).json({ error: "Inserimento esercizio fallito" });
+    }
+    res.status(201).json({
+      status: "OK",
+      message: "Esercizio creato con successo",
+      exercise_id: result.insertId,
+    });
+  });
+}
+
 module.exports = {
   index,
   show,
   store,
   listUsers,
+  listExercises,
+  storeExercise,
 };
