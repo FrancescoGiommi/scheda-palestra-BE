@@ -1,7 +1,6 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const workoutRouter = require("./routers/workout.Router");
 
 const { APP_HOST, APP_PORT } = process.env;
 
@@ -11,9 +10,13 @@ app.use(
   })
 );
 
-app.use(workoutRouter);
+/* Body parser per decifrare il request body */
+app.use(express.json());
 
-app.use("/woprkouts", workoutRouter);
+const workoutRouter = require("./routers/workout.Router");
+
+app.use(workoutRouter);
+app.use("/workouts", workoutRouter);
 
 app.listen(APP_PORT, () => {
   console.log(`Server listening at ${APP_HOST}:${APP_PORT}`);
