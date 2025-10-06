@@ -16,7 +16,7 @@ app.use(express.json());
 const workoutRouter = require("./routers/workout.Router");
 
 app.use(workoutRouter);
-app.use("/workouts", workoutRouter);
+app.use("/api/workouts", workoutRouter);
 
 app.listen(APP_PORT, () => {
   console.log(`Server listening at ${APP_HOST}:${APP_PORT}`);
