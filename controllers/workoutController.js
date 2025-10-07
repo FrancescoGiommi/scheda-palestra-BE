@@ -78,7 +78,7 @@ function listUsers(req, res) {
 
 function listExercises(req, res) {
   const sql =
-    "SELECT id, nome, descrizione, gruppo_muscolare, attrezzatura, difficolta, video_dimostrativo, note FROM exercise";
+    "SELECT id, nome, descrizione, gruppo_muscolare, attrezzatura, difficolta, video_dimostrativo, note, serie, ripetizioni FROM exercise";
 
   connection.query(sql, (err, results) => {
     if (err) {
@@ -101,11 +101,13 @@ function storeExercise(req, res) {
     attrezzatura,
     difficolta,
     video_dimostrativo,
-    commenti,
+    note,
+    serie,
+    ripetizioni,
   } = req.body;
 
   const sql = `
-    INSERT INTO exercise (nome, descrizione, gruppo_muscolare, attrezzatura, difficolta, video_dimostrativo, commenti)
+    INSERT INTO exercise (nome, descrizione, gruppo_muscolare, attrezzatura, difficolta, video_dimostrativo, note, serie, ripetizioni)
     VALUES (?, ?, ?, ?, ?, ?, ?)
   `;
   const params = [
@@ -115,7 +117,9 @@ function storeExercise(req, res) {
     attrezzatura,
     difficolta,
     video_dimostrativo,
-    commenti,
+    note,
+    serie,
+    ripetizioni,
   ];
 
   connection.query(sql, params, (err, result) => {
