@@ -1,6 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const workoutController = require("../controllers/workoutController");
+const { login, register } = require("../controllers/authController");
+
+// Rotte per l'autenticazione
+router.post("/auth/login", login);
+router.post("/auth/register", register);
 
 router.get("/", workoutController.index);
 router.get("/users", workoutController.listUsers);

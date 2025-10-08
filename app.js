@@ -1,20 +1,24 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const authRouter = require("./routers/workout.Router");
+const workoutRouter = require("./routers/workout.Router");
+const { APP_HOST, APP_PORT, APP_FRONTEND_URL } = process.env;
 
-const { APP_HOST, APP_PORT } = process.env;
-
-app.use(
-  cors({
-    origin: "localhost: http://localhost:5173",
-  })
-);
+/* Cors config */
+var corsOptions = {
+  origin: APP_FRONTEND_URL,
+  optionsSuccessStatus: 200,
+};
 
 /* Body parser per decifrare il request body */
 app.use(express.json());
 
-const workoutRouter = require("./routers/workout.Router");
+/* Middlewares */
+app.use(express.static("public"));
+app.use(cors(corsOptions));
 
+app.use("/api/auth", authRouter);
 app.use(workoutRouter);
 app.use("/api/workouts", workoutRouter);
 
